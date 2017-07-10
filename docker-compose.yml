@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    ports:
+      - 3679:3697
+    networks:
+      my-network:
+        aliases:
+          - redis
+
+  node-redis-simple-counter:
+    build: ./node_service_counter
+    volumes:
+      - ./node_service_counter:/usr/src/app
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
+    networks:
+      my-network:
+        aliases:
+          - simple-counter
+
+  node-redis-loadtest-master:
+    build: ./loadtest_master
+    volumes:
+      - ./loadtest_master:/usr/src/app
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis
+    networks:
+      - my-network
+
+  node-redis-loadtest-slave:
+    build: ./loadtest_slave
+    volumes:
+      - ./loadtest_slave:/usr/src/app
+    depends_on:
+      - redis
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

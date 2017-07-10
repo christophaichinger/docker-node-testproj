@@ -1,0 +1,3 @@
+#part1:
+run redis:
+docker run -d --name redis -p 3679:3697 redis
