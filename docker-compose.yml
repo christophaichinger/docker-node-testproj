@@ -5,12 +5,9 @@ services:
     image: redis
     ports:
       - 3679:3697
-    networks:
-      my-network:
-        aliases:
-          - redis
 
-  node-redis-simple-counter:
+  simple-counter:
+    image: 127.0.0.1:5000/simple_counter
     build: ./node_service_counter
     volumes:
       - ./node_service_counter:/usr/src/app
@@ -18,12 +15,9 @@ services:
       - 8081:8081
     depends_on:
       - redis
-    networks:
-      my-network:
-        aliases:
-          - simple-counter
 
-  node-redis-loadtest-master:
+  loadtest-master:
+    image: 127.0.0.1:5000/loadtest_master
     build: ./loadtest_master
     volumes:
       - ./loadtest_master:/usr/src/app
@@ -31,18 +25,17 @@ services:
       - 8080:8080
     depends_on:
       - redis
-    networks:
-      - my-network
 
-  node-redis-loadtest-slave:
+  loadtest-slave:
+    image: 127.0.0.1:5000/loadtest_slave
     build: ./loadtest_slave
     volumes:
       - ./loadtest_slave:/usr/src/app
     depends_on:
       - redis
-    networks:
-      - my-network
-
-networks:
-  my-network:
-    driver: bridge
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: '50M'

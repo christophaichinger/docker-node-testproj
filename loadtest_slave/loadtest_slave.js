@@ -8,9 +8,9 @@ let isShuttingDown = false;
 const requestsQueueName = 'requestsToSend';
 
 function heartBeat() {
+    if(isShuttingDown) return;
     client.brpop(requestsQueueName, 0, function(err, data) {
         if(err) {
-            if(isShuttingDown) return;
             console.error(err);
             return setImmediate(heartBeat);
         }

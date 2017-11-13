@@ -9,7 +9,7 @@ var client = redis.createClient('6379', 'redis');
 app.get('/counter', function(req, res, next) {
     client.incr('counter', function(err, counter) {
         if(err) return next(err);
-        res.send('Request counter (since redis container creation): ' + counter);
+        res.send('Request counter (since redis container creation): ' + counter + '\n');
     });
 });
 
