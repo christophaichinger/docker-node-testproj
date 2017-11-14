@@ -1,0 +1,13 @@
+{
+  "name": "nodejs_redis_loadtest",
+  "description": "playground for exploring nodejs, redis, docker",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "^4.15.3",
+    "guid": "0.0.12"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
